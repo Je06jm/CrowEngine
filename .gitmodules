@@ -1,0 +1,6 @@
+[submodule "crow/thirdparties/VulkanMemoryAllocator"]
+	path = crow/thirdparties/VulkanMemoryAllocator
+	url = https://github.com/GPUOpen-LibrariesAndSDKs/VulkanMemoryAllocator.git
+[submodule "crow/thirdparties/vk-bootstrap"]
+	path = crow/thirdparties/vk-bootstrap
+	url = https://github.com/charles-lunarg/vk-bootstrap.git
