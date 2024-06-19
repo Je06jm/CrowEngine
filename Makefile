@@ -36,7 +36,7 @@ AR_FLAGS = rcs
 LD = g++
 
 LD_FLAGS = -LCrow/libs -L$(VULKAN_SDK)/Lib
-LD_FLAGS += -lglfw3 -lgdi32 -luser32 -lkernel32 -lvulkan-1 -lshaderc
+LD_FLAGS += -lglfw3 -lgdi32 -luser32 -lkernel32 -lvulkan-1 -lshaderc -lstdc++exp
 
 -include $(CXX_ENGINE_DEPS)
 
@@ -69,12 +69,12 @@ build/Editor/%.o: Editor/src/%.cpp
 
 editor: CXX_FLAGS += -O2
 editor: engine_objs $(CXX_EDITOR_OBJS)
-	$(LD) $(LD_FLAGS) $(CXX_EDITOR_OBJS) bin/$(ENGINE_LIBRARY) -o bin/$(EDITOR)
+	$(LD) $(CXX_EDITOR_OBJS) $(LD_FLAGS) bin/$(ENGINE_LIBRARY) -o bin/$(EDITOR)
 
 editor_debug: CXX_FLAGS += -g
 editor_debug: CXX_FLAGS += -DCROW_DEBUG
 editor_debug: engine_objs $(CXX_EDITOR_OBJS)
-	$(LD) $(LD_FLAGS) $(CXX_EDITOR_OBJS) bin/$(ENGINE_LIBRARY) -o bin/$(EDITOR)
+	$(LD) $(CXX_EDITOR_OBJS) $(LD_FLAGS) bin/$(ENGINE_LIBRARY) -o bin/$(EDITOR)
 
 OBJS_TO_CLEAN = $(call rwildcard,build,*.o) $(call rwildcard,bin,*)
 
