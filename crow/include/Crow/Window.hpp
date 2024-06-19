@@ -20,6 +20,25 @@ class Window {
   public:
     Window(const std::string& title, size_t width, size_t height,
            bool fullscreen);
+
+    Window(const Window&) = delete;
+    Window(Window&& window)
+        : window{window.window}, title{std::move(window.title)},
+          width{window.width}, height{window.height} {
+        window.window = nullptr;
+    }
+
+    Window& operator=(const Window&) = delete;
+    Window& operator=(Window&& window) {
+        this->window = window.window;
+        title = std::move(window.title);
+        width = window.width;
+        height = window.height;
+        window.window = nullptr;
+
+        return *this;
+    }
+
     ~Window();
 
     void SetTitle(const std::string& title);
