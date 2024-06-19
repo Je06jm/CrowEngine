@@ -17,6 +17,8 @@ CXX_ENGINE_INCLUDES += -I$(VULKAN_SDK)/Include
 
 CXX_FLAGS = -std=c++23 -Wall -Wextra $(CXX_COMMON_INCLUDES)
 
+CXX_THIRDPARTIES_FLAG = -std=c++23 $(CXX_COMMON_INCLUDES)
+
 CXX_ENGINE_SRCS = $(wildcard Crow/src/*.cpp)
 CXX_ENGINE_OBJS = $(patsubst Crow/src/%.cpp,build/Crow/%.o,$(CXX_ENGINE_SRCS))
 CXX_ENGINE_DEPS = $(patsubst Crow/src/%.cpp,build/Crow/%.d,$(CXX_ENGINE_SRCS))
@@ -50,7 +52,7 @@ build/Crow/%.o: Crow/src/%.cpp
 	$(CXX) $(CXX_FLAGS) $(CXX_ENGINE_INCLUDES) -MMD -MP -c $< -o $@
 
 build/thirdparties/vk-bootstrap/%.o: Crow/thirdparties/vk-bootstrap/src/%.cpp
-	$(CXX) $(CXX_FLAGS) $(CXX_ENGINE_INCLUDES) -c $< -o $@
+	$(CXX) $(CXX_THIRDPARTIES_FLAG) $(CXX_ENGINE_INCLUDES) -c $< -o $@
 
 engine_objs: $(CXX_ENGINE_OBJS) $(CXX_VK_BOOTSTRAP_OBJS)
 	$(AR) $(AR_FLAGS) bin/$(ENGINE_LIBRARY) $(CXX_ENGINE_OBJS) $(CXX_VK_BOOTSTRAP_OBJS)
