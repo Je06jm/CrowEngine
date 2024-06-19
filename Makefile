@@ -4,7 +4,7 @@ export VULKAN_SDK
 ENGINE_LIBRARY = libcrowengine.a
 EDITOR = croweditor
 
-# Shamlessly stollen from https://stackoverflow.com/questions/2483182/recursive-wildcards-in-gnu-make
+# Shamlessly stolen from https://stackoverflow.com/questions/2483182/recursive-wildcards-in-gnu-make
 rwildcard=$(foreach d,$(wildcard $(1:=/*)),$(call rwildcard,$d,$2) $(filter $(subst *,%,$2),$d))
 
 CXX = g++
@@ -33,8 +33,8 @@ AR_FLAGS = rcs
 
 LD = g++
 
-LD_FLAGS = -LCrow/libs -L$(VULKAN_SDK)/Lib -Lbin
-LD_FLAGS += -lSDL2 -lglfw3 -lgdi32 -luser32 -lkernel32 -lvulkan-1 -lshaderc -lcrowengine
+LD_FLAGS = -LCrow/libs -L$(VULKAN_SDK)/Lib
+LD_FLAGS += -lglfw3 -lgdi32 -luser32 -lkernel32 -lvulkan-1 -lshaderc
 
 -include $(CXX_ENGINE_DEPS)
 
@@ -63,16 +63,16 @@ engine_debug: CXX_FLAGS += -DCROW_DEBUG
 engine_debug: engine_objs
 
 build/Editor/%.o: Editor/src/%.cpp
-	$(CXX) $(CXX_FLAGS) $(CXX_COMMON_INCLUDES) -MMD -MP -c $< -o $@
+	$(CXX) $(CXX_FLAGS) $(CXX_ENGINE_INCLUDES) -MMD -MP -c $< -o $@
 
 editor: CXX_FLAGS += -O2
 editor: engine_objs $(CXX_EDITOR_OBJS)
-	$(LD) $(LD_FLAGS) $(CXX_EDITOR_OBJS) -o bin/$(EDITOR)
+	$(LD) $(LD_FLAGS) $(CXX_EDITOR_OBJS) bin/$(ENGINE_LIBRARY) -o bin/$(EDITOR)
 
 editor_debug: CXX_FLAGS += -g
 editor_debug: CXX_FLAGS += -DCROW_DEBUG
 editor_debug: engine_objs $(CXX_EDITOR_OBJS)
-	$(LD) $(LD_FLAGS) $(CXX_EDITOR_OBJS) -o bin/$(EDITOR)
+	$(LD) $(LD_FLAGS) $(CXX_EDITOR_OBJS) bin/$(ENGINE_LIBRARY) -o bin/$(EDITOR)
 
 OBJS_TO_CLEAN = $(call rwildcard,build,*.o) $(call rwildcard,bin,*)
 
